@@ -3,7 +3,7 @@ import { getFieldsMappedByType, IField, IFieldValue } from './fields';
 import { FieldReader } from './FieldReader';
 
 export function parse(rawBuffer: Buffer) {
-  var buffer = removeEscape(rawBuffer);
+  const buffer = removeEscape(rawBuffer);
   const header = parseHeader(buffer);
   const fields = getFieldsMappedByType(header.type);
   return { type: header.type, fields: readFields(fields, buffer, 10) };
@@ -18,19 +18,20 @@ function removeEscape(buffer: Buffer) {
   const esc = 0x8d;
   const offset = 0x20;
   let escSeen = false;
-  for (let i = 0; i < buffer.length; i++) {
+
+  for (const item of buffer) {
     if (escSeen) {
-      result.push(buffer[i] - offset);
+      result.push(item - offset);
       escSeen = false;
       continue;
     }
 
-    if (buffer[i] == esc) {
+    if (item === esc) {
       escSeen = true;
       continue;
     }
 
-    result.push(buffer[i]);
+    result.push(item);
   }
 
   return Buffer.from(result);

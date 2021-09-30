@@ -9,6 +9,7 @@ export function CreateFakeDecoder(): FakeDecoder {
   const server = net.createServer();
 
   server.listen(port, host, () => {
+    /* tslint:disable:no-console */
     console.log(`TCP server listening on ${host}:${port}`);
   });
 

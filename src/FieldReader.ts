@@ -1,23 +1,24 @@
 import { FieldType, IField, IFieldValue } from './fields';
 
 export function FieldReader(fieldDefinitions: Record<string, IField>) {
-  return function (buffer: Buffer, offset: number): IFieldValue | null {
+  return (buffer: Buffer, offset: number): IFieldValue | null => {
     let index = offset;
     const type = buffer[index++];
     const field = fieldDefinitions[type];
-    if (type == 0x8f) return null;
+    if (type === 0x8f) return null;
     const length = buffer.readInt8(index++);
     const newOffset = length + 2;
 
     if (!field) {
       index += length;
+      /* tslint:disable:no-console */
       console.warn('Field not defined', type, index, buffer.slice(index).toString('hex'));
       return { length: newOffset };
     }
     const name = field.name;
     switch (field.type) {
       case FieldType.time:
-        return { name, length: newOffset, value: parseInt((readTime(buffer, index) / BigInt(1000)).toString()) };
+        return { name, length: newOffset, value: parseInt((readTime(buffer, index) / BigInt(1000)).toString(), 10) };
       case FieldType.Int:
         return { name, length: newOffset, value: readint(buffer, length, index) };
       case FieldType.string:

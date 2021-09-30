@@ -1,11 +1,11 @@
 import { FieldType, IField } from './fields';
 
 export function FieldWriter(fieldDefinitions: Record<string, IField>) {
-  return function (name: string, value: any): Buffer {
+  return (name: string, value: any): Buffer => {
     const field = fieldDefinitions[name];
     const fieldType = field.type;
     let size = field.size;
-    if (fieldType == FieldType.string) size = value.length;
+    if (fieldType === FieldType.string) size = value.length;
     if (!size) throw new Error('Size not defined for ' + fieldType + ' - ' + value);
     const buf = Buffer.alloc(2 + size);
     buf.writeUInt8(field.code, 0);
