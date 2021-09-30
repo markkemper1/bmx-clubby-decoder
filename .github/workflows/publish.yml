@@ -27,7 +27,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           node-version: 12
           cache: npm
-      - run: npm ci
-      - run: npm publish
+      - run: npm ci --ignore-scripts
+      - run: |
+          npm config set //registry.npmjs.org/:_authToken ${NODE_AUTH_TOKEN}
+          npm publish --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
