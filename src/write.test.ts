@@ -1,8 +1,10 @@
-const write = require('./writer');
-const parse = require('./parse');
+import { write } from './writer';
+import { parse } from './parse';
+import { MessageType } from './fields';
+
 test('Writes a record', () => {
   const input = {
-    type: 'PASSING',
+    type: 'PASSING' as MessageType,
     fields: {
       PASSING_NUMBER: 15450,
       TRAN_CODE: 'KC-52885',

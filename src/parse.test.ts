@@ -1,4 +1,4 @@
-const parse = require('./parse');
+import { parse } from './parse';
 test('Parse a record', () => {
   const input = {
     type: 'PASSING',

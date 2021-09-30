@@ -1,4 +1,4 @@
-module.exports = {
+export const recordTypes: Record<number, string> = {
   0x00: 'RESET',
   0x01: 'PASSING',
   0x02: 'STATUS',

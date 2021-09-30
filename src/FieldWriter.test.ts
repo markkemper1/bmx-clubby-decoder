@@ -1,7 +1,7 @@
-const { getFieldsForType, getFieldsByName } = require('.');
-const FieldWriter = require('./FieldWriter');
+import { getFieldsMappedByName } from './fields';
+import { FieldWriter } from './FieldWriter';
 
-const passingFields = getFieldsByName('PASSING');
+const passingFields = getFieldsMappedByName('PASSING');
 const fieldWriter = FieldWriter(passingFields);
 [
   {

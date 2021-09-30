@@ -1,15 +1,18 @@
-const net = require('net');
+import net from 'net';
 const port = 5403;
 const host = 'localhost';
+interface FakeDecoder {
+  send: (data: Buffer) => void;
+}
 
-module.exports = function () {
+export function CreateFakeDecoder(): FakeDecoder {
   const server = net.createServer();
 
   server.listen(port, host, () => {
     console.log(`TCP server listening on ${host}:${port}`);
   });
 
-  let socket;
+  let socket: net.Socket | null;
 
   server.on('connection', (client) => {
     const clientAddress = `${client.remoteAddress}:${client.remotePort}`;
@@ -26,7 +29,7 @@ module.exports = function () {
   });
 
   return {
-    send(data) {
+    send(data: Buffer) {
       if (!socket) return;
 
       if (!socket.destroyed) {
@@ -39,4 +42,4 @@ module.exports = function () {
       }
     },
   };
-};
+}

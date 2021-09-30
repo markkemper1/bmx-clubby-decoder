@@ -1,5 +1,7 @@
-module.exports = function (fieldDefinitions) {
-  return function (buffer, offset) {
+import { FieldType, IField, IFieldValue } from './fields';
+
+export function FieldReader(fieldDefinitions: Record<string, IField>) {
+  return function (buffer: Buffer, offset: number): IFieldValue | null {
     let index = offset;
     const type = buffer[index++];
     const field = fieldDefinitions[type];
@@ -14,19 +16,21 @@ module.exports = function (fieldDefinitions) {
     }
     const name = field.name;
     switch (field.type) {
-      case 'time':
-        return { name, length: newOffset, value: parseInt(readint(buffer, length, index) / BigInt(1000)) };
-      case 'int':
+      case FieldType.time:
+        return { name, length: newOffset, value: parseInt((readTime(buffer, index) / BigInt(1000)).toString()) };
+      case FieldType.Int:
         return { name, length: newOffset, value: readint(buffer, length, index) };
-      case 'string':
+      case FieldType.string:
         return { name, length: newOffset, value: buffer.slice(index, index + length).toString('ascii') };
-      case 'hex':
-        return { name, length: newOffset, value: buffer.slice(index, index + length).toString('hex') };
     }
-    return null;
   };
 
-  function readint(buffer, length, index) {
+  function readTime(buffer: Buffer, index: number): bigint {
+    const intBuffer = buffer.slice(index, index + 8).reverse();
+    return intBuffer.readBigUInt64BE();
+  }
+
+  function readint(buffer: Buffer, length: number, index: number): number {
     const intBuffer = buffer.slice(index, index + length).reverse();
     switch (length) {
       case 1:
@@ -35,10 +39,8 @@ module.exports = function (fieldDefinitions) {
         return intBuffer.readInt16BE();
       case 4:
         return intBuffer.readInt32BE();
-      case 8:
-        return intBuffer.readBigUInt64BE();
       default:
-        throw new Error('Invalid length for int field', length);
+        throw new Error(`Invalid length for int field: ${length}`);
     }
   }
-};
+}
