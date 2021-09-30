@@ -26,7 +26,6 @@ jobs:
         with: 
           node-version: 12
           cache: npm
-      # Runs a single command using the runners shell
-      - name: Build
-        run: npm run build
+      - run: npm ci
+      - run: npm run build
 
