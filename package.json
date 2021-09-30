@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/markkemper1/bmx-clubby-decoder.git"
   },
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "dist/index.js",
   "engines": {
