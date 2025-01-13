@@ -18,6 +18,9 @@ test('Parse a record', () => {
     'jgI6AMaNrwAAAQABBFo8AAAKCEtDLTUyODg1BAiYO0X2l8YFAAUCfAAGAk8ACAIAABQBBIEE7ioEAI8=',
     'base64',
   );
+  console.log(inputBuffer)
+  console.log(inputBuffer.toJSON())
+  console.log([...inputBuffer])
   const result = parse(inputBuffer);
 
   expect(result.type).toBe(input.type);
@@ -29,3 +32,18 @@ test('Parse a record', () => {
   expect(result.fields.SPORT).toBe(input.fields.SPORT);
   expect(result.fields.DECODER_ID).toBe(input.fields.DECODER_ID);
 });
+
+test.only('Parse a record', () => {
+
+  const inputBuffer = Buffer.from(
+    '8e0211000000000001000a0455582d3304081036bc7c83fc05008f8e0211000000000001000a0455582d300408e817d07c83fc05008f',
+    'hex',
+  );
+  console.log(inputBuffer)
+  console.log(inputBuffer.toJSON())
+  console.log([...inputBuffer])
+  const result = parse(inputBuffer);
+  console.log(result)
+});
+
+//

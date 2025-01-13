@@ -1,3 +1,4 @@
+import { toUSVString } from 'util';
 import { MessageType } from './fields';
 import { recordTypes } from './recordTypes';
 
@@ -12,6 +13,13 @@ export function parseHeader(buffer: Buffer): IHeader {
   // 00 - SOR (Start of Record = 8e)
   if (buffer[0] !== 0x8e)
     throw new Error('Start of record indicator missing! buffer:' + buffer.toString('hex') + ' [0]:' + buffer[0]);
+
+  console.log("Passing header1 ", buffer.readInt16LE(2), buffer.slice(2, 4).toString('hex'), buffer.slice(2, 4).toString('base64'))
+  console.log("Passing headee2 ", buffer.readInt16LE(8), buffer.slice(8, 10).toString('hex'), buffer.slice(8, 10).toString('base64'))
+
+  for (let [i, byte] of buffer.entries())
+    console.log(i, byte)
+
   return {
     version: buffer.readInt8(1), // 01 - Version (default = 02)
     length: buffer.readInt16LE(2), // 02 - length of record LSB, 03 - length of record MSB

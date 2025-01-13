@@ -4,6 +4,7 @@ import { FieldReader } from './FieldReader';
 
 export function parse(rawBuffer: Buffer) {
   const buffer = removeEscape(rawBuffer);
+  console.log(buffer.toJSON())
   const header = parseHeader(buffer);
   const fields = getFieldsMappedByType(header.type);
   return { type: header.type, fields: readFields(fields, buffer, 10) };
